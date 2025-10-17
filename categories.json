@@ -1,0 +1,63 @@
+{
+  "Flights": [
+    "flight", "airline", "airfare", "fly", "travel", "destination",
+    "airport", "ticket", "boarding", "aviation", "trip", "vacation",
+    "jetblue", "united", "delta", "southwest", "american airlines"
+  ],
+  "Food": [
+    "restaurant", "pizza", "meal", "food", "delivery", "dine",
+    "menu", "order", "eat", "dining", "cafe", "kitchen", "chef",
+    "burger", "sushi", "takeout", "grubhub", "doordash", "ubereats"
+  ],
+  "Retail": [
+    "store", "shop", "shopping", "clothing", "apparel", "fashion",
+    "discount", "sale", "wear", "outfit", "style", "boutique",
+    "shoes", "accessories", "jeans", "dress", "shirt", "pants"
+  ],
+  "Entertainment": [
+    "concert", "movie", "show", "event", "ticket", "theater",
+    "festival", "performance", "live", "venue", "cinema", "film",
+    "music", "band", "artist", "entertainment", "stage", "seats"
+  ],
+  "Hotels": [
+    "hotel", "accommodation", "stay", "room", "resort", "lodge",
+    "booking", "reservation", "suite", "hospitality", "inn", "motel",
+    "airbnb", "vrbo", "marriott", "hilton", "hyatt"
+  ],
+  "Tech": [
+    "laptop", "phone", "computer", "electronics", "gadget", "device",
+    "software", "app", "technology", "digital", "smartphone", "tablet",
+    "apple", "samsung", "microsoft", "google", "amazon"
+  ],
+  "Beauty": [
+    "beauty", "cosmetics", "makeup", "skincare", "hair", "salon",
+    "spa", "perfume", "fragrance", "lotion", "serum", "lipstick",
+    "sephora", "ulta", "cosmetic"
+  ],
+  "Fitness": [
+    "gym", "fitness", "workout", "exercise", "health", "wellness",
+    "training", "yoga", "sports", "athletic", "running", "membership",
+    "peloton", "crossfit"
+  ],
+  "Grocery": [
+    "grocery", "supermarket", "market", "produce", "organic", "fresh",
+    "food delivery", "instacart", "whole foods", "trader joe"
+  ],
+  "Automotive": [
+    "car", "auto", "vehicle", "automotive", "drive", "rental",
+    "uber", "lyft", "service", "repair", "parts", "tire"
+  ],
+  "Home": [
+    "home", "furniture", "decor", "kitchen", "bedroom", "living room",
+    "appliance", "ikea", "wayfair", "bed bath", "home depot", "lowes"
+  ],
+  "Books": [
+    "book", "reading", "novel", "author", "library", "bookstore",
+    "kindle", "audiobook", "audible", "barnes", "literature"
+  ],
+  "Streaming": [
+    "streaming", "subscription", "netflix", "hulu", "disney", "spotify",
+    "music streaming", "video", "premium", "unlimited"
+  ],
+  "Other": []
+}

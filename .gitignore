@@ -1,0 +1,13 @@
+credentials.json
+token.json
+*.json
+!categories.json
+promo_dashboard.html
+demo_promo_dashboard.html
+weekly_promo_report.md
+weekly_promo_report.json
+demo_promos.json
+__pycache__/
+*.pyc
+.DS_Store
+venv/
