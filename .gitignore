@@ -1,13 +1,39 @@
+# Credentials and tokens
 credentials.json
 token.json
-*.json
-!categories.json
-promo_dashboard.html
-demo_promo_dashboard.html
-weekly_promo_report.md
-weekly_promo_report.json
-demo_promos.json
-__pycache__/
+*.json.bak
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Python
 *.pyc
-.DS_Store
+__pycache__/
+*.pyo
+*.pyd
+.Python
 venv/
+env/
+*.egg-info/
+
+# Environment variables
+.env
+.env.local
+
+# Output files
+weekly_promo_report.md
+*.log
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -278,7 +278,7 @@ See `USAGE_GUIDE.md` for instructions on automatically emailing the dashboard to
 - 0% false positives
 - Clean, actionable dashboard
 
-**Quality over quantity!**
+**Quality over quantity!**s
 
 ## Contributing
 

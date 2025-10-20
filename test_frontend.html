@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Gmail Promo Agent</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 10px 10px 0;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .promo-list {
+            margin-top: 20px;
+        }
+        
+        .promo-card {
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: #f7fafc;
+        }
+        
+        .promo-card h3 {
+            margin: 0 0 10px 0;
+            color: #2d3748;
+        }
+        
+        .promo-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        .promo-details {
+            margin-top: 10px;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        
+        .api-info {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 API Test Page</h1>
+        <p>This page tests if your backend API is working correctly.</p>
+        
+        <div class="api-info">
+            <strong>API Base URL:</strong> <code id="apiUrl">http://localhost:8000</code>
+        </div>
+        
+        <div id="status" class="status loading">
+            Checking API connection...
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Setup</h3>
+            <button onclick="testHealthCheck()">Test Health Check</button>
+            <button onclick="createTestUser()">Create Test User</button>
+            <button onclick="checkAuthStatus()">Check Gmail Status</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Gmail Connection</h3>
+            <button onclick="connectGmail()">Connect Gmail</button>
+            <button onclick="disconnectGmail()">Disconnect Gmail</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Scan & View</h3>
+            <button onclick="scanForPromos()">Scan for Promos</button>
+            <button onclick="testGetPromos()">Get Promos</button>
+            <button onclick="testGetStats()">Get Stats</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8000';
+        
+        // Check if API is online when page loads
+        window.addEventListener('load', async () => {
+            await checkApiStatus();
+        });
+        
+        async function checkApiStatus() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                const response = await fetch(`${API_URL}/`);
+                const data = await response.json();
+                
+                if (data.status === 'online') {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = `
+                        ✅ <strong>API is online!</strong><br>
+                        Version: ${data.version}<br>
+                        Time: ${new Date(data.timestamp).toLocaleString()}
+                    `;
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `
+                    ❌ <strong>Cannot connect to API</strong><br>
+                    Make sure the server is running: <code>python api_server.py</code><br>
+                    Error: ${error.message}
+                `;
+            }
+        }
+        
+        async function testHealthCheck() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+                
+                showResults('Health Check', data);
+            } catch (error) {
+                showError('Health Check Failed', error);
+            }
+        }
+        
+        async function checkAuthStatus() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/status/test_user`);
+                const data = await response.json();
+                
+                showResults('Gmail Connection Status', data);
+            } catch (error) {
+                showError('Check Status Failed', error);
+            }
+        }
+        
+        async function connectGmail() {
+            showLoading();
+            
+            try {
+                // Start OAuth flow
+                const response = await fetch(`${API_URL}/api/auth/start?user_id=test_user`);
+                const data = await response.json();
+                
+                if (data.authorization_url) {
+                    // Open authorization URL in new window
+                    document.getElementById('results').innerHTML = `
+                        <div class="status success">
+                            <strong>Opening authorization window...</strong><br>
+                            Please sign in to your Gmail account and grant access.<br><br>
+                            <a href="${data.authorization_url}" target="_blank" style="color: #667eea; text-decoration: underline;">
+                                Click here if window doesn't open automatically
+                            </a><br><br>
+                            After authorizing, return here and click "Check Gmail Status" to confirm.
+                        </div>
+                    `;
+                    
+                    // Open in new window
+                    window.open(data.authorization_url, 'Gmail Authorization', 'width=600,height=700');
+                } else {
+                    showError('Connect Gmail Failed', { message: data.message || 'No authorization URL received' });
+                }
+            } catch (error) {
+                showError('Connect Gmail Failed', error);
+            }
+        }
+        
+        async function disconnectGmail() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/disconnect/test_user`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                showResults('Disconnect Gmail', data);
+            } catch (error) {
+                showError('Disconnect Failed', error);
+            }
+        }
+        
+        async function createTestUser() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: 'test_user',
+                        email: 'test@example.com'
+                    })
+                });
+                const data = await response.json();
+                
+                showResults('Create User', data);
+            } catch (error) {
+                showError('Create User Failed', error);
+            }
+        }
+        
+        async function scanForPromos() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/scan`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: 'test_user'
+                    })
+                });
+                const data = await response.json();
+                
+                showResults('Scan Results', data);
+            } catch (error) {
+                showError('Scan Failed', error);
+            }
+        }
+        
+        async function testGetPromos() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/promos/test_user`);
+                const promos = await response.json();
+                
+                // Display promos in a nice format
+                let html = '<div class="promo-list">';
+                html += `<h2>Found ${promos.length} Promo Codes</h2>`;
+                
+                promos.forEach(promo => {
+                    html += `
+                        <div class="promo-card">
+                            <h3>${promo.merchant}</h3>
+                            <div class="promo-code">${promo.code}</div>
+                            <div class="promo-details">
+                                <strong>Discount:</strong> ${promo.discount}<br>
+                                <strong>Category:</strong> ${promo.category}<br>
+                                <strong>Expires:</strong> ${promo.expiration || 'No expiration'}<br>
+                                <strong>Urgency:</strong> <span class="${promo.urgency_class}">${promo.urgency_text || 'Unknown'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                
+                document.getElementById('results').innerHTML = html;
+            } catch (error) {
+                showError('Get Promos Failed', error);
+            }
+        }
+        
+        async function testGetCategories() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/categories`);
+                const data = await response.json();
+                
+                showResults('Categories', data);
+            } catch (error) {
+                showError('Get Categories Failed', error);
+            }
+        }
+        
+        async function testGetStats() {
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/stats/test_user`);
+                const data = await response.json();
+                
+                showResults('Statistics', data);
+            } catch (error) {
+                showError('Get Stats Failed', error);
+            }
+        }
+        
+        function showLoading() {
+            document.getElementById('results').innerHTML = `
+                <div class="status loading">Loading...</div>
+            `;
+        }
+        
+        function showResults(title, data) {
+            document.getElementById('results').innerHTML = `
+                <h2>${title}</h2>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+        
+        function showError(title, error) {
+            document.getElementById('results').innerHTML = `
+                <div class="status error">
+                    <strong>${title}</strong><br>
+                    ${error.message}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
