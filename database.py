@@ -5,9 +5,10 @@ Uses SQLAlchemy ORM with SQLite
 
 from sqlalchemy import create_engine, Column, String, Integer, DateTime, Boolean, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, Session
 from datetime import datetime
 import os
+
 
 # Create database engine
 DATABASE_URL = "sqlite:///./promo_agent.db"
@@ -128,14 +129,7 @@ def update_user_token(db, user_id: str, gmail_token: str):
         return user
     return None
 
-def update_last_scan(db, user_id: str):
-    """Update user's last scan timestamp"""
-    user = get_user(db, user_id)
-    if user:
-        user.last_scan = datetime.utcnow()
-        db.commit()
-        return user
-    return None
+
 
 # ============================================================================
 # PROMO CODE OPERATIONS
@@ -297,3 +291,12 @@ if __name__ == "__main__":
     init_database()
     print("Database setup complete!")
     print(f"Database file: {os.path.abspath('promo_agent.db')}")
+
+
+def update_last_scan(db: Session, user_id: str):
+    """Update user's last scan timestamp"""
+    user = db.query(User).filter(User.id == user_id).first()
+    if user:
+        user.last_scan = datetime.now()
+        db.commit()
+    return user

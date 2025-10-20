@@ -347,64 +347,57 @@ async def get_user_info(user_id: str, db: Session = Depends(get_db)):
 @app.post("/api/scan", response_model=ScanResponse)
 async def scan_gmail(request: ScanRequest, db: Session = Depends(get_db)):
     """
-    Scan Gmail for promo codes
-    
-    For now, this adds sample data to test the database.
-    We'll implement real Gmail scanning in Phase 3.
+    Scan Gmail for promo codes - REAL VERSION (Phase 3)
     """
     
     try:
+        # Get user from database
         user = get_user(db, request.user_id)
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        # Sample promo data (we'll replace this with real Gmail scanning)
-        sample_promos = [
-            {
-                "code": "FALL40",
-                "merchant": "CheapOair",
-                "discount": "40% off",
-                "category": "Flights",
-                "expiration": "Oct 21, 2025",
-                "subject": "Explore Fall Favorites! – Fly Round Trip from $50.12",
-                "days_left": 3,
-                "urgency_text": "3 days",
-                "urgency_class": "urgency-high",
-                "is_expired": False
-            },
-            {
-                "code": "PRESALE",
-                "merchant": "Chase Center",
-                "discount": "Check email for details",
-                "category": "Retail",
-                "expiration": "October 19, 2026",
-                "subject": "Today at 2PM: Your Presale for Kelly Chen",
-                "days_left": 366,
-                "urgency_text": "366 days",
-                "urgency_class": "urgency-low",
-                "is_expired": False
-            },
-            {
-                "code": "BFCOASTERSALE",
-                "merchant": "California's Great America",
-                "discount": "20% Off",
-                "category": "Food",
-                "expiration": "None",
-                "subject": "Get A Free Upgrade With A 2026 Gold Pass!",
-                "days_left": None,
-                "urgency_text": "Unknown",
-                "urgency_class": "urgency-unknown",
-                "is_expired": False
-            }
-        ]
+        # Check if Gmail is connected
+        if not user.gmail_token:
+            raise HTTPException(
+                status_code=400, 
+                detail="Gmail not connected. Please connect your Gmail account first."
+            )
         
-        # Clear existing promos for this demo
+        # Parse token from database
+        import json
+        token_info = json.loads(user.gmail_token)
+        
+        # Refresh token if needed
+        token_info = refresh_token_if_needed(token_info)
+        
+        # REAL GMAIL SCAN - This calls the functions we just fixed!
+        print(f"\n🔍 Starting Gmail scan for user: {request.user_id}")
+        scan_result = scan_gmail_for_promos(
+            token_info,
+            query="category:promotions newer_than:7d",
+            max_emails=50
+        )
+        
+        if not scan_result['success']:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Gmail scan failed: {scan_result.get('message', 'Unknown error')}"
+            )
+        
+        promos = scan_result['promos']
+        print(f"✅ Scan complete! Found {len(promos)} promos")
+        
+        # Clear existing promos for this user
         delete_all_user_promos(db, request.user_id)
         
-        # Insert sample promos
-        inserted_count = bulk_insert_promos(db, request.user_id, sample_promos)
+        # Insert new promos into database
+        inserted_count = bulk_insert_promos(db, request.user_id, promos)
         
-        # Get stats
+        # Update last scan time
+        from database import update_last_scan
+        update_last_scan(db, request.user_id)
+        
+        # Get updated stats
         stats = get_promo_stats(db, request.user_id)
         
         return ScanResponse(
@@ -413,10 +406,13 @@ async def scan_gmail(request: ScanRequest, db: Session = Depends(get_db)):
             active_promos=stats["active_promos"],
             expiring_soon=stats["expiring_soon"],
             categories=list(stats["categories"].keys()),
-            message=f"Successfully scanned and found {inserted_count} promo codes"
+            message=f"Successfully scanned {scan_result['emails_scanned']} emails and found {inserted_count} promo codes"
         )
         
+    except HTTPException:
+        raise
     except Exception as e:
+        print(f"❌ Scan error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/promos/{user_id}", response_model=List[PromoCode])

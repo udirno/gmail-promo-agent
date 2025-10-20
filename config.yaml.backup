@@ -1,0 +1,27 @@
+# Gmail Promo Agent Configuration
+
+gmail:
+  user: "me"
+  
+  # Gmail search query - adjust timeframe as needed
+  # Options: newer_than:3d, newer_than:7d, newer_than:14d, newer_than:30d
+  query: "category:promotions newer_than:7d"
+  
+  # Path to OAuth credentials (download from Google Cloud Console)
+  credentials_path: "./credentials.json"
+
+report:
+  # HTML dashboard (primary output - shareable, interactive)
+  dashboard_path: "./promo_dashboard.html"
+  
+  # Markdown report (backup format)
+  output_path: "./weekly_promo_report.md"
+  template_path: "./report_template.md"
+  
+  # Category definitions
+  categories_path: "./categories.json"
+  
+  # Feature flags
+  remove_expired: true          # Automatically remove expired codes
+  sort_by_urgency: true          # Show expiring soon first
+  highlight_best_deals: true     # Prioritize high-value discounts

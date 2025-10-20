@@ -262,24 +262,12 @@ def extract_promos_from_emails(emails: List[Dict], categories_path: str = "categ
     """
     all_promos = []
     
-    print(f"\n📧 Processing {len(emails)} emails...")
-    
-    for idx, email in enumerate(emails, 1):
+    for email in emails:
         try:
             body_text, subject, sender = parse_email(email)
             
-            # Extract merchant name for logging
-            merchant = extract_merchant_name(subject, sender)
-            
             # Extract promos
             promos = extract_promos(body_text, subject, sender)
-            
-            if promos:
-                print(f"  ✅ Email {idx}/{len(emails)}: Found {len(promos)} promo(s) - {merchant}")
-                for promo in promos:
-                    print(f"     → Code: {promo['code']}")
-            else:
-                print(f"  ⚠️  Email {idx}/{len(emails)}: No promos - {merchant[:50]}")
             
             # Categorize
             categorized = [categorize_promo(p, categories_path) for p in promos]
@@ -287,15 +275,11 @@ def extract_promos_from_emails(emails: List[Dict], categories_path: str = "categ
             all_promos.extend(categorized)
             
         except Exception as e:
-            print(f"  ❌ Email {idx}/{len(emails)}: Error - {str(e)}")
+            print(f"Error processing email: {e}")
             continue
-    
-    print(f"\n📊 Total promos before deduplication: {len(all_promos)}")
     
     # Deduplicate
     unique_promos = deduplicate_promos(all_promos)
-    
-    print(f"📊 Unique promos after deduplication: {len(unique_promos)}")
     
     # Enrich with urgency data
     enriched_promos = enrich_promo_data(unique_promos)

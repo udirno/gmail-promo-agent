@@ -43,7 +43,7 @@ def extract_merchant_name(subject: str, sender: str = "") -> str:
         return brand
     
     # PRIORITY 3: Pattern "Brand Name - Subject" or "Brand Name | Subject"
-    separator_pattern = re.match(r'^([A-Z][A-Za-z\s&\'.]{2,30}?)\s*[-—–|:]\s*', subject)
+    separator_pattern = re.match(r'^([A-Z][A-Za-z\s&\'.]{2,30}?)\s*[-–—|:]\s*', subject)
     if separator_pattern:
         brand = separator_pattern.group(1).strip()
         # Verify it's not a marketing phrase
@@ -57,7 +57,7 @@ def extract_merchant_name(subject: str, sender: str = "") -> str:
     # PRIORITY 4: Clean subject and extract likely brand name
     # Remove common marketing noise
     noise_patterns = [
-        r'[🎁🎉🎊🎈✨👍🛍️📧✈️🍕🎭🏨💰🔥⚡🌟😍🎯💎🎪🌈]+',  # Emojis
+        r'[🎁🎉🎊🎈✨💝🛍️📧✈️🍕🎭🏨💰🔥⚡🌟😍🎯💎🎪🌈]+',  # Emojis
         r'(?:^|\s)(?:re|fwd?):\s*',  # RE:, FWD:
         r'(?:limited|exclusive|special|flash|final|last)\s+(?:time|offer|deal|sale|chance)',
         r'(?:don\'t|do not)\s+miss',
@@ -108,6 +108,7 @@ def extract_merchant_name(subject: str, sender: str = "") -> str:
     return "Unknown Merchant"
 
 
+
 def extract_promos(text: str, subject: str = "", sender: str = "") -> List[Dict]:
     """
     Extract promo codes and discounts from email text.
@@ -115,54 +116,33 @@ def extract_promos(text: str, subject: str = "", sender: str = "") -> List[Dict]
     """
     promos = []
     
-    # CLEAN THE TEXT FIRST - Remove HTML encoding artifacts
-    text = text.replace('=3D', '=')  # Fix quoted-printable equals
-    text = text.replace('=\n', '')    # Remove line continuations
-    text = re.sub(r'=([0-9A-F]{2})', lambda m: chr(int(m.group(1), 16)), text)  # Decode hex
-    text = re.sub(r'\s+', ' ', text)  # Normalize whitespace
-    
-    # STRICT promo code patterns - PRIORITIZED BY SPECIFICITY
-    # More specific patterns first to catch "Use Code: XXXXX" before loose patterns
+    # STRICT promo code patterns - must have context indicating it's actually a code
     code_patterns = [
-        # PRIORITY 1: Explicit "Use Code:" or "Promo Code:" with colon (most specific)
-        (r"(?:use|promo|promocode)\s+code\s*:\s*([A-Z0-9]{4,20})", 1),
-        (r"code\s*:\s*([A-Z0-9]{4,20})", 2),
+        # Explicit "code" or "coupon" mentions
+        r"(?:promo\s*code|promocode|promo|code|coupon|voucher)[:\s]+([A-Z0-9]{4,20})",
+        r"(?:use|enter|apply)\s+(?:code|promo)?\s*:?\s*([A-Z0-9]{4,20})\b",
         
-        # PRIORITY 2: "Code = XXXXX" or "Code XXXXX" with clear separator
-        (r"code\s*[=]\s*([A-Z0-9]{4,20})", 3),
-        (r"(?:promo|discount|coupon)\s*code\s+([A-Z0-9]{4,20})", 4),
+        # "at checkout" context
+        r"\b([A-Z0-9]{4,20})\s+at\s+checkout",
+        r"checkout\s+(?:with|using)\s+(?:code\s+)?([A-Z0-9]{4,20})",
         
-        # PRIORITY 3: "Use/Enter/Apply code XXXXX" - MUST have "code" word
-        (r"(?:use|enter|apply)\s+code\s+([A-Z0-9]{4,20})", 5),
+        # Clear discount context - code near percentage/dollar amount
+        r"\b([A-Z][A-Z0-9]{3,15})\s+(?:for|to\s+(?:get|save|receive))\s+(?:\d+%|\$\d+)",
+        r"(?:save|get)\s+(?:\d+%|\$\d+)\s+(?:with|using)\s+(?:code\s+)?([A-Z0-9]{4,20})",
         
-        # PRIORITY 4: Checkout context
-        (r"\b([A-Z0-9]{4,20})\s+at\s+checkout", 6),
-        (r"checkout\s+(?:with|using)\s+(?:code\s+)?([A-Z0-9]{4,20})", 7),
-        
-        # PRIORITY 5: Discount context - code near percentage/dollar
-        (r"\b([A-Z][A-Z0-9]{3,15})\s+(?:for|to\s+(?:get|save|receive))\s+(?:\d+%|\$\d+)", 8),
-        (r"(?:save|get)\s+(?:\d+%|\$\d+)\s+(?:with|using)\s+code\s+([A-Z0-9]{4,20})", 9),
+        # Format: CODE: XXXXX or Code = XXXXX
+        r"code\s*[=:]\s*([A-Z0-9]{4,20})",
     ]
     
-    # Find codes with priority scoring
-    code_candidates = []
-    for pattern, priority in code_patterns:
+    found_codes = set()
+    for pattern in code_patterns:
         matches = re.findall(pattern, text, re.IGNORECASE)
         for match in matches:
             code = match.upper() if isinstance(match, str) else match[0].upper()
             
             # Validate it looks like a real promo code
             if _is_valid_promo_code(code):
-                code_candidates.append((code, priority))
-    
-    # Deduplicate, keeping highest priority (lowest number)
-    found_codes = {}
-    for code, priority in code_candidates:
-        if code not in found_codes or priority < found_codes[code]:
-            found_codes[code] = priority
-    
-    # Sort by priority and take unique codes
-    unique_codes = sorted(found_codes.keys(), key=lambda c: found_codes[c])
+                found_codes.add(code)
     
     # Enhanced discount extraction - multiple formats
     discount_patterns = [
@@ -187,8 +167,8 @@ def extract_promos(text: str, subject: str = "", sender: str = "") -> List[Dict]
     merchant = extract_merchant_name(subject, sender)
     
     # Create promo entries
-    if unique_codes:
-        for code in unique_codes:
+    if found_codes:
+        for code in found_codes:
             promo = {
                 "code": code,
                 "discount": discounts[0] if discounts else "Check email for details",
@@ -249,9 +229,6 @@ def _is_valid_promo_code(code: str) -> bool:
         "SERVICE", "CUSTOMER", "ACCOUNT", "LOGIN", "PASSWORD",
         "BUSINESS", "COMPANY", "TEAM", "MEMBER", "USER",
         "UPDATE", "NOTICE", "ALERT", "REMINDER", "MESSAGE",
-        
-        # Button/action text that's not codes
-        "PRESALE", "ENTER", "CLICK", "VIEW", "SHOP", "BROWSE",
     }
     
     if code.upper() in false_positives:
@@ -275,6 +252,8 @@ def _is_valid_promo_code(code: str) -> bool:
         return True
     
     return False
+    
+    return promos
 
 
 def extract_expiration_date(text: str) -> Optional[str]:
@@ -297,6 +276,31 @@ def extract_expiration_date(text: str) -> Optional[str]:
             return match.group(1)
     
     return None
+
+
+def _is_false_positive(code: str) -> bool:
+    """
+    Filter out common false positives that aren't promo codes.
+    """
+    false_positives = {
+        "EMAIL", "HTTPS", "HTTP", "HTML", "GMAIL", "INBOX", 
+        "SUBJECT", "FROM", "REPLY", "UNSUBSCRIBE", "CLICK",
+        "IMAGE", "LINK", "BODY", "HEADER", "FOOTER", "STYLE"
+    }
+    
+    # Too short or too long
+    if len(code) < 4 or len(code) > 15:
+        return True
+    
+    # Known false positive
+    if code.upper() in false_positives:
+        return True
+    
+    # All numbers (likely not a promo code)
+    if code.isdigit():
+        return True
+    
+    return False
 
 
 def categorize_promo(promo: Dict, categories_path: str = "categories.json") -> Dict:
