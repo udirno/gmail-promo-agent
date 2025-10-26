@@ -33,14 +33,14 @@ cd gmail-promo-agent
 pip3 install -r requirements.txt
 
 # Set up Google credentials (one-time)
-# Follow the guide in docs/setup/QUICKSTART.md
+# Follow the guide in docs/setup/quickstart.md
 
 # Run the app
 python3 api_server.py
 # Then open: http://localhost:8000
 ```
 
-**Need detailed setup instructions?** See [QUICKSTART.md](docs/setup/QUICKSTART.md) for a complete step-by-step guide with screenshots.
+**Need detailed setup instructions?** See [quickstart.md](docs/setup/quickstart.md) for a complete step-by-step guide with screenshots.
 
 **Having issues?** Check the Troubleshooting section below or open a GitHub issue.
 
@@ -105,7 +105,7 @@ All processing happens on your machine. Your credentials stay in your local data
 
 ### Do I need Google Cloud credentials?
 
-Yes, but setup takes about 2 minutes. Google requires any app accessing Gmail (even local ones) to have OAuth credentials—think of it like creating an API key. [QUICKSTART.md](docs/setup/QUICKSTART.md) walks you through it step-by-step.
+Yes, but setup takes about 2 minutes. Google requires any app accessing Gmail (even local ones) to have OAuth credentials—think of it like creating an API key. [quickstart.md](docs/setup/quickstart.md) walks you through it step-by-step.
 
 ### Is my Gmail data safe?
 
@@ -134,7 +134,7 @@ First time: ~5 minutes (includes Google Cloud setup). Subsequent uses: ~30 secon
 **Common issues and quick fixes:**
 
 **"credentials.json not found"**  
-Make sure you've downloaded your OAuth credentials from Google Cloud Console and placed them in the project root directory. See [QUICKSTART.md](docs/setup/QUICKSTART.md) for detailed instructions.
+Make sure you've downloaded your OAuth credentials from Google Cloud Console and placed them in the project root directory. See [quickstart.md](docs/setup/quickstart.md) for detailed instructions.
 
 **"Port 8000 already in use"**  
 Another app is using that port. Either stop that app or edit `api_server.py` to use a different port (change `port=8000` to `port=8001`).
@@ -145,14 +145,14 @@ Add yourself as a test user in Google Cloud Console: APIs & Services → OAuth c
 **"No promo codes found"**  
 Check your Gmail promotions folder has emails from the last 7 days. The tool uses conservative extraction (quality over quantity). Try adjusting the time range in `config.yaml`: change `newer_than:7d` to `newer_than:30d`.
 
-**More help:** Check [QUICKSTART.md](docs/setup/QUICKSTART.md) for detailed troubleshooting or open a GitHub issue.
+**More help:** Check [quickstart.md](docs/setup/quickstart.md) for detailed troubleshooting or open a GitHub issue.
 
 ---
 
 ## Documentation
 
-- **[QUICKSTART.md](docs/setup/QUICKSTART.md)** - Get running in 5 minutes (START HERE!)
-- **[How We Built This](docs/blog/promo_agent_blog/how-we-built-gmail-promo-agent-with-claude.md)** - Building a local-first AI tool
+- **[quickstart.md](docs/setup/quickstart.md)** - Get running in 5 minutes (START HERE!)
+- **[How We Built This](docs/blog/how-we-built-gmail-promo-agent-with-claude.md)** - Building a local-first AI tool
 
 ---
 
@@ -180,9 +180,9 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 Ready to organize your promo codes?
 
-👉 **[Start with QUICKSTART.md](docs/setup/QUICKSTART.md)**
+👉 **[Start with quickstart.md](docs/setup/quickstart.md)**
 
-Or **[read why local-first matters](docs/blog/promo_agent_blog/how-we-built-gmail-promo-agent-with-claude.md)** first.
+Or **[read why local-first matters](docs/blog/how-we-built-gmail-promo-agent-with-claude.md)** first.
 
 ---
 
