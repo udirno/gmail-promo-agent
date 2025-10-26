@@ -1,8 +1,6 @@
 # Gmail Promo Agent
 
-**An AI-powered local tool that turns your cluttered promotional inbox into an organized, searchable dashboard — all while keeping your data on YOUR machine.**
-
-Built in a single day to demonstrate how AI can help create practical tools that respect your privacy.
+**A local-first AI tool that transforms your cluttered promotional inbox into an organized, searchable dashboard—while keeping your data on your machine.**
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
@@ -10,278 +8,163 @@ Built in a single day to demonstrate how AI can help create practical tools that
 
 ---
 
-## What This Does
+## Overview
 
-Your inbox has 50+ promotional emails with discount codes scattered everywhere. Finding a specific code takes 5-10 minutes of clicking through emails.
+Your Gmail inbox has 50+ promotional emails scattered everywhere. Finding a specific promo code takes 5-10 minutes of frustrated clicking. You know there was a Target discount somewhere, but where?
 
-**This tool:**
-- Scans your Gmail promotional folder automatically
-- Extracts promo codes, discounts, and expiration dates
-- Generates a searchable, sortable dashboard
-- Makes finding codes take 2 seconds instead of 10 minutes
-- **Runs 100% locally** - your data never touches our servers
+**Gmail Promo Agent solves this.**
 
-### Before:
-Spend 10 minutes reading emails to find "Was there a code for Target?"
+It automatically scans your Gmail promotional folder, extracts promo codes and discount information, identifies which merchants sent them, tracks expiration dates, and generates a clean, searchable dashboard. Finding any code takes 2 seconds instead of 10 minutes.
 
-### After:
-Open dashboard, search "Target", copy code. Done in 5 seconds.
+The entire tool runs locally on your computer. Your email data never touches external servers. No third-party access, no cloud processing, no subscriptions—just a privacy-respecting tool that works.
+
+**Why local-first?** Because you shouldn't have to trust a random web app with full access to your Gmail. This tool runs on your machine, uses your credentials, stores data in your local database, and you can inspect every line of code.
 
 ---
 
-## Why Local-First?
+## Quickstart
 
-**I deliberately chose NOT to build this as a web app.** Here's why:
-
-### Trust & Privacy Matter
-Would you give a random web app access to your Gmail? Probably not. Neither would I.
-
-This tool:
-- Runs on YOUR computer
-- Uses YOUR Google credentials
-- Stores data in YOUR local database
-- Never sends data to external servers
-- You can inspect every line of code
-
-### Ethical AI Development
-With AI tools becoming more powerful, **we need to be thoughtful about where we grant access.** A hosted web service with Gmail access is:
-- A security risk (credentials exposed to server)
-- A privacy risk (your emails processed remotely)  
-- A trust problem (how do you know data isn't stored?)
-
-**Local-first is the responsible choice.**
-
-[Read the full blog post on why local-first matters](BLOG_POST.md)
-
----
-
-## Features
-
-### Smart Extraction
-- Conservative detection - Only extracts real promo codes (no false positives)
-- Multiple discount formats - Handles %, $, BOGO, free shipping
-- Expiration tracking - Knows when codes expire
-- Merchant detection - Identifies which company sent the offer
-
-### Interactive Dashboard  
-- Real-time search - Find any code in milliseconds
-- Category filtering - Flights, Food, Retail, Entertainment, etc.
-- Urgency indicators - See which codes expire soon
-- One-click copying - Copy any code to clipboard instantly
-- Mobile responsive - Works on phone, tablet, or desktop
-
-### Privacy & Security
-- Read-only Gmail access - Cannot send, delete, or modify emails
-- Local OAuth - Authentication happens on your machine
-- Encrypted storage - Tokens stored securely in local database
-- No external calls - Dashboard works completely offline
-
----
-
-## Quick Start
-
-**Time to working app: ~5 minutes**
-
-### Prerequisites
-- Python 3.8+ installed ([Download here](https://www.python.org/downloads/))
-- Gmail account
-- 5 minutes
-
-### Setup in 3 Steps
+**For Mac users:**
 
 ```bash
-# 1. Clone and install
+# Clone and install
 git clone https://github.com/udirno/gmail-promo-agent.git
 cd gmail-promo-agent
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
-# 2. Set up Google credentials (one-time, ~2 minutes)
-# Follow the guide: QUICKSTART.md
+# Set up Google credentials (one-time)
+# Follow the guide in docs/setup/QUICKSTART.md
 
-# 3. Run the app
-python api_server.py
+# Run the app
+python3 api_server.py
 # Then open: http://localhost:8000
 ```
 
-**Full setup guide:** [QUICKSTART.md](QUICKSTART.md) - Start here if you're new!
+**Need detailed setup instructions?** See [QUICKSTART.md](docs/setup/QUICKSTART.md) for a complete step-by-step guide with screenshots.
+
+**Having issues?** Check the Troubleshooting section below or open a GitHub issue.
 
 ---
 
-## Screenshots
+## Design
 
-### Promotional Email Example
-![Promotional Email](screenshots/promo_email.png)
-*Typical promotional email with embedded discount code*
+### Why Local-First?
 
-### OAuth Authorization
-![OAuth Screen](screenshots/oauth_consent.png)
-*One-time Gmail authorization (your data stays local)*
+I deliberately chose not to build this as a web app. Here's why:
 
-### Extracted Codes
-![Extracted Promo Codes](screenshots/found_promos.png)
-*Clean, organized codes with merchant names and expiration dates*
+**Trust & Privacy:** Would you give a random web service access to your Gmail? I wouldn't either. This tool runs entirely on your computer, uses your own Google credentials, stores data in your local SQLite database, never sends data to external servers, and lets you inspect all the code.
 
----
+**Ethical AI Development:** As AI tools become more powerful, we need to be thoughtful about where we grant them access. A cloud service with Gmail access creates security risks (credentials exposed to servers), privacy risks (emails processed remotely), and trust problems (how do you know data isn't stored?). Local-first is the responsible choice.
 
-## How It Works
+### Key Features
 
-### Architecture
-```
-Your Computer (Everything runs here)
-│
-├─ Python Backend (FastAPI)
-│  ├─ Gmail API Integration (your credentials)
-│  ├─ AI-Enhanced Parser (extracts codes)
-│  └─ SQLite Database (local storage)
-│
-└─ HTML Dashboard
-   ├─ Search & Filter UI
-   └─ Works offline after generation
-```
+**Smart Extraction:**
+- Conservative detection—only extracts real promo codes with clear context
+- Handles multiple discount formats (%, $, BOGO, free shipping)
+- Tracks expiration dates and urgency levels
+- Identifies merchant names from sender domains
 
-### Data Flow
-1. **You authorize** - One-time OAuth with Google (you control access)
-2. **App scans Gmail** - Reads promotional emails using Gmail API
-3. **AI extracts codes** - Smart parsing finds real promo codes
-4. **Dashboard generates** - Beautiful, searchable HTML file
-5. **You use codes** - Search, filter, copy codes instantly
+**Interactive Dashboard:**
+- Real-time search across all codes
+- Category filtering (Flights, Food, Retail, Entertainment, etc.)
+- Urgency indicators (color-coded expiration warnings)
+- One-click code copying
+- Sortable columns
+- Mobile responsive
+- Works completely offline
 
-**Your emails never leave your computer.**
+**Privacy & Security:**
+- Read-only Gmail access (cannot send, delete, or modify emails)
+- Local OAuth authentication
+- Encrypted token storage in local database
+- No external API calls after initial setup
+- Fully auditable code
 
 ---
 
-## Tech Stack
+## Architecture
 
-**Backend:**
-- Python 3.8+ (main logic)
-- FastAPI (API server)
-- SQLAlchemy (database ORM)
-- Gmail API (email access)
+The Gmail Promo Agent uses a simple, privacy-first architecture.
 
-**Frontend:**
-- Vanilla JavaScript (no framework needed)
-- HTML/CSS (responsive design)
-- Local storage (works offline)
+**Backend (Python/FastAPI):** An API server handles Gmail authentication and email processing. A SQLite database stores users, OAuth tokens, and extracted promo codes. Conservative extraction logic prevents false positives, and intelligent merchant detection automatically categorizes offers.
 
-**Why these choices?**
-- No external dependencies once set up
-- Easy to audit - readable Python code
-- Fast setup - standard libraries
-- Privacy preserved - no cloud services
+**Frontend (HTML/JavaScript):** A self-contained HTML dashboard with no external dependencies provides real-time filtering and search. It works offline once generated and includes no tracking or analytics.
 
----
+**Data Flow:**
+1. You authorize Gmail access (one-time OAuth)
+2. App scans your promotional emails locally
+3. AI-enhanced parser extracts real promo codes
+4. Dashboard generates as a shareable HTML file
+5. Your emails never leave your computer
 
-## Documentation
-
-- **[QUICKSTART.md](QUICKSTART.md)** - Get running in 5 minutes (START HERE!)
-- **[BLOG_POST.md](BLOG_POST.md)** - Why I built this local-first
-- **[SETUP_GUIDE.md](docs/SETUP_GUIDE.md)** - Detailed setup instructions
-- **[USAGE_GUIDE.md](docs/USAGE_GUIDE.md)** - How to use the dashboard
+All processing happens on your machine. Your credentials stay in your local database. Your data remains under your control.
 
 ---
 
 ## FAQ
 
-### Do I need to set up Google Cloud credentials?
-**Yes, but it takes ~2 minutes** following [QUICKSTART.md](QUICKSTART.md).
+### Do I need Google Cloud credentials?
 
-**Why?** Google requires this for any app accessing Gmail (even local ones). Think of it like creating an API key.
+Yes, but setup takes about 2 minutes. Google requires any app accessing Gmail (even local ones) to have OAuth credentials—think of it like creating an API key. [QUICKSTART.md](docs/setup/QUICKSTART.md) walks you through it step-by-step.
 
 ### Is my Gmail data safe?
-**Completely safe.** The app:
-- Runs only on your computer
-- Uses read-only access (cannot send/delete emails)
-- Stores data in local SQLite database
-- Uses standard OAuth (same as mobile Gmail apps)
 
-You can revoke access anytime at https://myaccount.google.com/permissions
+Completely safe. The app runs only on your computer, uses read-only Gmail access (cannot send/delete emails), stores everything in a local SQLite database, uses standard OAuth (same as official Gmail apps), and never transmits data to external servers. You can revoke access anytime at https://myaccount.google.com/permissions
 
 ### Can I use this on multiple computers?
-**Yes!** Just clone the repo and set up credentials on each machine. Data stays local to each computer.
 
-### Does this work with Outlook/Yahoo?
-**Not yet.** Currently Gmail only. Email provider integration could be added in the future.
+Yes. Just clone the repo and set up credentials on each machine. Your data stays local to each computer—no syncing between them.
 
 ### Can I share my promo codes with family?
-**Yes!** The dashboard is a self-contained HTML file. Just email it or upload to shared drive. Recipients don't need the app installed to view codes.
+
+Absolutely. The dashboard is a self-contained HTML file. Just email it or upload to a shared drive. Recipients don't need the app installed to view your codes.
+
+### Does this work with Outlook or Yahoo?
+
+Not yet—currently Gmail only. Support for other providers could be added in the future.
+
+### How long does setup take?
+
+First time: ~5 minutes (includes Google Cloud setup). Subsequent uses: ~30 seconds (just run the app). Google Cloud setup is one-time only.
 
 ---
 
-## Why I Built This
+## Troubleshooting
 
-### The Problem
-I was drowning in promotional emails. Whenever I needed a code, I'd spend 10 minutes clicking through my inbox. Frustrating and time-wasting.
+**Common issues and quick fixes:**
 
-### The Solution
-I wanted a tool that:
-- Automatically extracts all my promo codes
-- Makes them searchable and organized  
-- **Doesn't require trusting a third party with Gmail access**
+**"credentials.json not found"**  
+Make sure you've downloaded your OAuth credentials from Google Cloud Console and placed them in the project root directory. See [QUICKSTART.md](docs/setup/QUICKSTART.md) for detailed instructions.
 
-### The Result
-Built in a single day using AI assistance (Claude) to:
-- Write the core extraction logic
-- Implement Gmail API integration
-- Create the dashboard interface
-- Handle edge cases and testing
+**"Port 8000 already in use"**  
+Another app is using that port. Either stop that app or edit `api_server.py` to use a different port (change `port=8000` to `port=8001`).
 
-**Total development time: ~8 hours** (including learning Gmail API, OAuth setup, and documentation)
+**"Permission denied during OAuth"**  
+Add yourself as a test user in Google Cloud Console: APIs & Services → OAuth consent screen → Test users → Add your Gmail address.
 
-### The Takeaway
-This demonstrates how AI can help you build practical tools quickly — tools you actually want to use, that respect your privacy, and that you can understand and modify.
+**"No promo codes found"**  
+Check your Gmail promotions folder has emails from the last 7 days. The tool uses conservative extraction (quality over quantity). Try adjusting the time range in `config.yaml`: change `newer_than:7d` to `newer_than:30d`.
+
+**More help:** Check [QUICKSTART.md](docs/setup/QUICKSTART.md) for detailed troubleshooting or open a GitHub issue.
 
 ---
 
-## Development
+## Documentation
 
-### Local Development
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Initialize database
-python database.py
-
-# Run API server (with auto-reload)
-python api_server.py
-
-# Run tests
-python check_merchants.py
-```
-
-### Project Structure
-```
-gmail-promo-agent/
-├── api_server.py              # FastAPI backend
-├── gmail_service.py           # Gmail API integration
-├── database.py                # SQLite models
-├── promo_parser.py            # Code extraction logic
-├── dashboard_generator.py     # HTML dashboard builder
-├── categories.json            # Category definitions
-├── config.yaml                # Configuration
-└── docs/                      # Documentation
-```
+- **[QUICKSTART.md](docs/setup/QUICKSTART.md)** - Get running in 5 minutes (START HERE!)
+- **[How We Built This](docs/blog/promo_agent_blog/how-we-built-gmail-promo-agent-with-claude.md)** - Building a local-first AI tool
 
 ---
 
 ## Contributing
 
-This is a personal project demonstrating local-first AI tools. Not actively seeking contributions, but feedback is welcome!
-
-**Ideas for future versions:**
-- Support for other email providers (Outlook, Yahoo)
-- Browser extension for auto-applying codes
-- Calendar integration for expiration reminders
-- Better ML-based merchant detection
-- Mobile app version
+This is a personal project demonstrating local-first AI tools. Feedback is welcome via GitHub issues.
 
 ---
 
 ## License
 
-MIT License - Do whatever you want with this code.
-
-See [LICENSE](LICENSE) for details.
+MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
@@ -293,21 +176,13 @@ See [LICENSE](LICENSE) for details.
 
 ---
 
-## Support
-
-- **Issues:** [GitHub Issues](https://github.com/udirno/gmail-promo-agent/issues)
-- **Questions:** Check [QUICKSTART.md](QUICKSTART.md) or open an issue
-- **Security concerns:** Please open a private security advisory
-
----
-
 ## Try It Now
 
 Ready to organize your promo codes?
 
-**[Start with QUICKSTART.md](QUICKSTART.md)** - 5 minute setup!
+👉 **[Start with QUICKSTART.md](docs/setup/QUICKSTART.md)**
 
-Or **[read why local-first matters](BLOG_POST.md)** first.
+Or **[read why local-first matters](docs/blog/promo_agent_blog/how-we-built-gmail-promo-agent-with-claude.md)** first.
 
 ---
 
