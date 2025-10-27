@@ -41,6 +41,30 @@ What used to take 10 minutes of frustrated inbox searching now takes 2 seconds. 
 - **Deals captured:** I caught 8 expiring codes in the first month that I would have completely missed
 - **Privacy maintained:** Full control over my data—nothing leaves my machine
 
+## Try It Yourself
+
+The code is on GitHub: [github.com/udirno/gmail-promo-agent](https://github.com/udirno/gmail-promo-agent)
+
+If you want to set it up:
+
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/udirno/gmail-promo-agent.git
+cd gmail-promo-agent
+pip install -r requirements.txt
+```
+
+Set up Gmail API access. Go to [Google Cloud Console](https://console.cloud.google.com), create a project, enable Gmail API, and download OAuth credentials as `credentials.json`.
+
+Run the agent:
+```bash
+python main.py
+```
+
+The dashboard will open automatically at `http://localhost:8000`, or you can open `dashboard.html` directly in your browser.
+
+First time you run it, you'll authenticate via browser. The credentials get stored locally in `token.pickle` so you only need to do it once.
+
 ## How I Built It with Claude
 
 I'm not a software engineer. I'm trying to keep up in the age of AI like everyone else. But I wanted to test whether publicly available AI tools could help me solve a real problem in my daily life.
@@ -174,30 +198,6 @@ I ran it, it worked, and I had a functional tool.
 **Local-first tools are actually simpler.** You don't need cloud processing for something like this. Running locally is easier, more private, and completely viable for personal tools.
 
 **AI helps, but you still need to understand.** I made all the important decisions about architecture, privacy, and features. Claude was like a knowledgeable assistant who handled the implementation details. I still needed to understand what was happening.
-
-## Try It Yourself
-
-The code is on GitHub: [github.com/udirno/gmail-promo-agent](https://github.com/udirno/gmail-promo-agent)
-
-If you want to set it up:
-
-Clone the repository and install dependencies:
-```bash
-git clone https://github.com/udirno/gmail-promo-agent.git
-cd gmail-promo-agent
-pip install -r requirements.txt
-```
-
-Set up Gmail API access. Go to [Google Cloud Console](https://console.cloud.google.com), create a project, enable Gmail API, and download OAuth credentials as `credentials.json`.
-
-Run the agent:
-```bash
-python main.py
-```
-
-The dashboard will open automatically at `http://localhost:8000`, or you can open `dashboard.html` directly in your browser.
-
-First time you run it, you'll authenticate via browser. The credentials get stored locally in `token.pickle` so you only need to do it once.
 
 ## What's Next
 

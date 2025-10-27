@@ -43,7 +43,7 @@ Type this command:
 python3 --version
 ```
 
-**If you see** `Python 3.8.10` or higher → **Skip to Step 2!**
+**If you see** `Python 3.8.10` or higher → **Skip to Step 2**
 
 **If you get an error** → Install Python:
 
@@ -146,7 +146,7 @@ cd ~/Desktop/gmail-promo-agent
 ls credentials.json  # Should show the file
 ```
 
-### Step 4: Run the App! (30 seconds)
+### Step 4: Run the App (30 seconds)
 
 Start the server:
 ```bash
@@ -160,7 +160,7 @@ Gmail Promo Agent API Starting...
 Server running at: http://localhost:8000
 ```
 
-**Leave this terminal open!** (Server needs to keep running)
+**Leave this terminal open** (Server needs to keep running)
 
 #### 4.1: Open the Test Page
 
@@ -182,7 +182,7 @@ xdg-open test_frontend.html    # Linux
 3. Sign in with your Gmail account
 4. You'll see: "Google hasn't verified this app"
    - Click "Advanced" → "Go to Promo Code Manager (unsafe)"
-   - *(It says "unsafe" because it's YOUR local app—this is normal!)*
+   - *(It says "unsafe" because it's your local app—this is normal)*
 5. Click "Allow"
 6. Window says "Gmail connected successfully"
 7. Close that window and return to test page
@@ -199,7 +199,7 @@ xdg-open test_frontend.html    # Linux
    ...
    Total promos: 12
    ```
-4. Click "Get Promos" to see your codes!
+4. Click "Get Promos" to see your codes
 
 ### Step 5: View Your Dashboard
 
@@ -211,14 +211,13 @@ start promo_dashboard.html     # Windows
 xdg-open promo_dashboard.html  # Linux
 ```
 
-**You're done!**
+**You're done**
 
 **What you can do now:**
 - **Search instantly:** Type any merchant name
 - **Filter by category:** Click category pills
 - **Copy codes:** One-click copy to clipboard
 - **Re-scan anytime:** Just click "Scan for Promos" again
-- **Share dashboard:** Email the HTML file to family—they can open it in any browser!
 
 ### Troubleshooting
 
@@ -240,8 +239,6 @@ xdg-open promo_dashboard.html  # Linux
 - Check your Gmail promotions folder for emails in last 7 days
 - The tool uses conservative extraction (quality over quantity)
 - Adjust time in `config.yaml`: change `newer_than:7d` to `newer_than:30d`
-
-**Need more help?** See [docs/setup/quickstart.md](docs/setup/quickstart.md) for detailed troubleshooting or open a GitHub issue.
 
 ## Why Local-First?
 
@@ -265,8 +262,6 @@ I deliberately chose not to build this as a web app. Here's why:
 - Urgency indicators (color-coded expiration warnings)
 - One-click code copying
 - Sortable columns
-- Mobile responsive
-- Works completely offline
 
 **Privacy & Security:**
 - Read-only Gmail access (cannot send, delete, or modify emails)
@@ -345,7 +340,6 @@ open promo_dashboard.html
 ## Documentation
 
 - **[How We Built This](docs/blog/how-we-built-gmail-promo-agent-with-claude.md)** - Building a local-first AI tool with Claude
-- **[Detailed Quickstart](docs/setup/quickstart.md)** - Extended setup guide with more troubleshooting
 
 ## Contributing
 
@@ -359,12 +353,3 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 - Built with assistance from Claude (Anthropic)
 - Gmail API documentation by Google
-- Inspired by the need for privacy-respecting tools
-
-## Try It Now
-
-Ready to organize your promo codes?
-
-**Follow the Quickstart above** or **[read why local-first matters](docs/blog/how-we-built-gmail-promo-agent-with-claude.md)** first.
-
-**Built with AI in a single day | Privacy-first | Local-always**
