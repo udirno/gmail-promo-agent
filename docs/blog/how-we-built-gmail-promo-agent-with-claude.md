@@ -8,7 +8,7 @@ I'd think "didn't Target send me a discount code last week?" and then waste time
 
 I wanted something simple: a tool that could scan my Gmail, pull out all the promo codes, and put them in one place where I could actually find them. But I wasn't willing to hand over my Gmail credentials to some random web app. I needed something that ran locally on my computer and kept my data private.
 
-So I built it. With Claude's help, I went from idea to working tool in one day.
+With Claude's help, I went from idea to working tool in one day.
 
 ## What I Built
 
@@ -37,7 +37,7 @@ What used to take 10 minutes of frustrated inbox searching now takes 2 seconds. 
 *Each code displays urgency in days (21 days, 27 days, 72 days) so you never miss an expiring deal*
 
 **Real impact:**
-- **Time saved:** About 20 hours per year (10 min/week × 52 weeks → 2 seconds)
+- **Time saved:** 
 - **Deals captured:** I caught 8 expiring codes in the first month that I would have completely missed
 - **Privacy maintained:** Full control over my data—nothing leaves my machine
 
@@ -67,9 +67,9 @@ First time you run it, you'll authenticate via browser. The credentials get stor
 
 ## How I Built It with Claude
 
-I'm not a software engineer. I'm trying to keep up in the age of AI like everyone else. But I wanted to test whether publicly available AI tools could help me solve a real problem in my daily life.
+I’m not a software engineer, but I was curious if I could build a simple AI tool that could actually make my life easier.
 
-Here's the exact process I followed. If you're non-technical like me, you can use this same approach for your own projects.
+Here's the exact process I followed.
 
 ### Step 1: Figure Out What I Actually Needed
 
@@ -91,8 +91,6 @@ Claude helped me break it down into pieces I could understand:
 I didn't need to know how to do any of this myself. I just needed to understand what needed to happen.
 
 ### Step 2: Gmail API Setup
-
-This was the part I was most worried about. I've never worked with Google's APIs before.
 
 **What I asked Claude:**
 > "Walk me through setting up Gmail API OAuth for a local Python app. I want to authenticate once and store credentials securely."
@@ -201,21 +199,15 @@ I ran it, it worked, and I had a functional tool.
 
 ## What's Next
 
-This project shows that AI can help non-technical people build practical tools quickly. You don't need a computer science degree. You just need a problem worth solving and the willingness to iterate until it works.
+This project shows that AI can help regular people build practical tools quickly. You just need a problem worth solving and the willingness to iterate until it works.
 
-I'm thinking about adding a browser extension for quicker access, maybe a mobile app with notifications for expiring codes, and possibly support for other email providers like Outlook or Yahoo. Integration with price tracking services could be interesting too.
-
-You could use this same approach to build other things: a receipt organizer for expense tracking, an event aggregator that pulls all your tickets and reservations, a newsletter summarizer, or a follow-up reminder system. The code is open source, so you can audit it, modify it, or use it as a starting point for your own projects.
+You could use this same approach to build other things: a receipt organizer for expense tracking, an event aggregator that pulls all your tickets and reservations, a newsletter summarizer. The code is open source, so anyone can use it if interested.
 
 ## Conclusion
 
-From idea to working tool in one day. From 10 minutes of inbox frustration to 2 seconds of search. From worrying about privacy to having full control.
+AI-assisted development isn't about replacing technical skills. It's about making it possible for more people to solve their own problems without needing years of programming experience, quickly.
 
-AI-assisted development isn't about replacing technical skills. It's about making it possible for more people to solve their own problems without needing years of programming experience.
-
-The idea behind this project is to show that AI can help ordinary people speed up ordinary processes in their lives without needing deep technical knowledge—just by using AI thoughtfully.
-
-I built something simple, useful, and modern that works for me. Maybe it'll work for you too.
+I built something simple, useful, and modern that works for me. Please feel free to make it your own.
 
 *Built with Claude • 100% Local • Privacy-First • Open Source*
 
