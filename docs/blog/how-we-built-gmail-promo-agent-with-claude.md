@@ -26,19 +26,19 @@ What used to take 10 minutes of frustrated inbox searching now takes 2 seconds. 
 
 ### Main Dashboard 
 
-<img src="screenshots/dashboard-main.png" width="600" alt="Full dashboard showing summary stats, category filters, and all promo codes in a clean table">
+<img src="screenshots/dashboard-main.png" width="450" alt="Full dashboard showing summary stats, category filters, and all promo codes in a clean table">
 
 *The dashboard shows 10 active offers across 3 categories with one-click copy buttons for each code*
 
 ### Search
 
-<img src="screenshots/dashboard-search.png" width="600" alt="Dashboard filtered to show only Guitar Center promos after typing in search bar">
+<img src="screenshots/dashboard-search.png" width="450" alt="Dashboard filtered to show only Guitar Center promos after typing in search bar">
 
 *Type "guitar center" to instantly filter and see all 6 available codes from that merchant*
 
 ### Expiration Tracking
 
-<img src="screenshots/dashboard-expiring.png" width="600" alt="Table view showing urgency column with days until expiration for each promo code">
+<img src="screenshots/dashboard-expiring.png" width="500" alt="Table view showing urgency column with days until expiration for each promo code">
 
 *Each code displays urgency in days (21 days, 27 days, 72 days) so you never miss an expiring deal*
 
