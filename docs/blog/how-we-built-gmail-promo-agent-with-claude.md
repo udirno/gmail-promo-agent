@@ -24,22 +24,28 @@ The entire thing runs locally. Your emails never leave your machine. No external
 
 What used to take 10 minutes of frustrated inbox searching now takes 2 seconds. Here's what the dashboard looks like:
 
-### Main Dashboard View
-![Full dashboard showing summary stats, category filters, and all promo codes in a clean table](screenshots/dashboard-main.png)
+### Main Dashboard 
+
+<img src="screenshots/dashboard-main.png" width="600" alt="Full dashboard showing summary stats, category filters, and all promo codes in a clean table">
+
 *The dashboard shows 10 active offers across 3 categories with one-click copy buttons for each code*
 
-### Search in Action
-![Dashboard filtered to show only Guitar Center promos after typing in search bar](screenshots/dashboard-search.png)
+### Search
+
+<img src="screenshots/dashboard-search.png" width="600" alt="Dashboard filtered to show only Guitar Center promos after typing in search bar">
+
 *Type "guitar center" to instantly filter and see all 6 available codes from that merchant*
 
 ### Expiration Tracking
-![Table view showing urgency column with days until expiration for each promo code](screenshots/dashboard-expiring.png)
+
+<img src="screenshots/dashboard-expiring.png" width="600" alt="Table view showing urgency column with days until expiration for each promo code">
+
 *Each code displays urgency in days (21 days, 27 days, 72 days) so you never miss an expiring deal*
 
 **Real impact:**
-- **Time saved:** 
-- **Deals captured:** I caught 8 expiring codes in the first month that I would have completely missed
-- **Privacy maintained:** Full control over my data—nothing leaves my machine
+- **Time saved** 
+- **Deals captured** 
+- **Privacy maintained**
 
 ## Try It Yourself
 
