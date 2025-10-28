@@ -2,7 +2,7 @@
 
 ## The Problem
 
-I was drowning in promotional emails. Over the years, I've subscribed to countless mailing lists—airlines, restaurants, retailers, concert venues, tech newsletters. My inbox is full of offers, but when I actually need a promo code, I spend 10 minutes clicking through dozens of emails trying to remember which store sent what deal.
+Over the years, I've subscribed to countless mailing lists—airlines, restaurants, retailers, concert venues, tech newsletters. My inbox is full of offers, but when I actually need a promo code, I spend 10 minutes clicking through dozens of emails trying to remember which store sent what deal.
 
 I'd think "didn't Target send me a discount code last week?" and then waste time searching through my promotions folder. By the time I found it, the code had usually expired.
 
