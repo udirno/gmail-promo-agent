@@ -287,6 +287,21 @@ The Gmail Promo Agent uses a simple, privacy-first architecture.
 
 All processing happens on your machine. Your credentials stay in your local database. Your data remains under your control.
 
+## Considerations
+
+**Extraction Accuracy:**
+The promo code extraction uses regex patterns that work well for common promotional email formats. However, please be aware:
+
+- **Current coverage:** The regex patterns are tuned for typical promotional emails and work reliably for most major retailers and service providers
+- **Iterative improvement:** The patterns will need a few rounds of tuning before they cover a wider variety of email formats
+- **No security risk:** Extraction limitations do not pose any security issues. However, you may experience:
+  - **False negatives:** Some emails may be misclassified as promotions even if they are not
+  - **False positives:** Some legitimate promotional emails may be missed
+  - **Extraction errors:** The parser may occasionally fail to extract the correct code from certain promotions
+
+**Reporting Issues:**
+If you encounter any defects or limitations with the extraction logic, please file a GitHub issue describing the problem. This helps improve the tool for everyone, though fixes cannot be guaranteed.
+
 ## FAQ
 
 ### Do I need Google Cloud credentials?
