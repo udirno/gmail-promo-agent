@@ -295,8 +295,8 @@ The promo code extraction uses regex patterns that work well for common promotio
 - **Current coverage:** The regex patterns are tuned for typical promotional emails and work reliably for most major retailers and service providers
 - **Iterative improvement:** The patterns will need a few rounds of tuning before they cover a wider variety of email formats
 - **No security risk:** Extraction limitations do not pose any security issues. However, you may experience:
-  - **False negatives:** Some emails may be misclassified as promotions even if they are not
-  - **False positives:** Some legitimate promotional emails may be missed
+  - **False negatives:** Some legitimate promotional emails may be missed 
+  - **False positives:** Some emails may be misclassified as promotions even if they are not
   - **Extraction errors:** The parser may occasionally fail to extract the correct code from certain promotions
 
 **Reporting Issues:**
